@@ -29,5 +29,8 @@ print(f'The first character: {user_string[0]}, the last character: {user_string[
 #Using a for loop, construct the string character by character: 
 # Print the first character, then the second, then the third, until the full string is printed.
 
+in_lines = ''
+
 for char in user_string:
-    print(char)
+    in_lines += char
+    print(in_lines)
