@@ -228,7 +228,7 @@ data = [
 
 # Create a function that asks the questions to the user, and check his answers. 
 correct_answers=0
-incorrect_unswers = 0
+incorrect_answers = 0
 wrong_answers = []
 for topic in data:
     user_answer= input(topic['question']+ ' ')
@@ -237,7 +237,7 @@ for topic in data:
         correct_answers +=1
     elif user_answer != topic['answer']:
         print("That's wrong")
-        incorrect_unswers +=1
+        incorrect_answers +=1
         wrong_answers.append(user_answer)
 
 
