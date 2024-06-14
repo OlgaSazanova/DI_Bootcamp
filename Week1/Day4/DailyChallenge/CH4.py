@@ -48,10 +48,4 @@ for row in matrix_transp:
 
 print(output_string)
 
-# To decrypt the matrix, Neo reads each column from top to bottom, starting from the leftmost column, 
-# selecting only the alpha characters and connecting them. 
-# Then he replaces every group of symbols between two alpha characters by a space.
 
-
-
-print(output_string)
