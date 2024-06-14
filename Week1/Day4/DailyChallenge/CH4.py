@@ -9,34 +9,49 @@
 #     #t%
 #     ^r!
 
+matrix= [
+    [7, 'i', 'i'],
+    ['T', 's', 'x'],
+    ['h', '%', '?'],
+    ['i', ' ', '#'],
+    ['s', 'M', ' '],
+    ['$', 'a', ' '],
+    ['#', 't', '%'],
+    ['^', 'r', '!']  
+     ]
 
-# The matrix is a grid of strings (alphanumeric characters and spaces) with a hidden message in it.
-# A grid means that you could potentially break it into rows and columns, like here:
+# To decrypt the matrix, Neo reads each column from top to bottom, starting from the leftmost column, 
+# selecting only the alpha characters and connecting them. 
+# so we transpose a matrix to be able to go through it like Neo did.
+matrix_transp= [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+   
 
-# 7	i	i
-# T	s	x
-# h	%	?
-# i		#
-# s	M	
-# $	a	
-# #	t	%
-# ^	r	!
+]
 
-
-# Matrix: A matrix is a two-dimensional array. It is a grid of numbers arranged in rows and columns.
-# To reproduce the grid, the matrix should be a 2D list, not a string
-
+for i in range(len(matrix)):
+    for k in range(len(matrix[0])):
+        matrix_transp[k][i] = matrix[i][k]
 
 
-# To decrypt the matrix, Neo reads each column from top to bottom, starting from the leftmost column, selecting only the alpha characters and connecting them. Then he replaces every group of symbols between two alpha characters by a space.
+# Then he replaces every group of symbols between two alpha characters by a space.
+output_string= ''
+for row in matrix_transp:
 
-# Using his technique, try to decode this matrix.
+    for symb in row:
+        if str(symb).isalpha():
+            output_string += symb
+        else:
+            output_string += ' '
 
-# Hints:
-# Use
-# ● lists for storing data
-# ● Loops for going through the data
-# ● if/else statements to check the data
-# ● String for the output of the secret message
+print(output_string)
 
-# Hint (if needed) : Look at the remote learning “Matrix” videos
+# To decrypt the matrix, Neo reads each column from top to bottom, starting from the leftmost column, 
+# selecting only the alpha characters and connecting them. 
+# Then he replaces every group of symbols between two alpha characters by a space.
+
+
+
+print(output_string)
