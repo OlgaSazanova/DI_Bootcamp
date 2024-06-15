@@ -1,11 +1,6 @@
-#build a playground
+#build a playground as on the picture on the website
 
-
-# = ' '
-# 1= *
-#2 =|
-# 3 = -
-playground =[
+playground = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 0, 0, 1],
@@ -29,48 +24,107 @@ def display_board(playground):
         
         print('')
 
+
+
+# function for getting input from user. DOESN'T WORK!!!! It doesn't insert a user's sign to playground
+# but playground changes itself - so we see that function takes a proper indexes
+
+def user_input(player, user_row, user_column):
+
+    global playground
+
+    user_row = int(user_row)
+    user_column = int(user_column)
+
+    row_index = (user_row - 1) * 2 + 1
+    col_index = (user_column - 1) * 4 + 4
+
+
+    if 1 <= user_row <= 3 and 1 <= user_column <= 3:
+        if playground[row_index][col_index] == 0:
+            playground[row_index][col_index] = player
+        else:
+            print('Position already taken, choose another position')
+    else:
+        print('Your row or column number is wrong, enter numbers betwee 1 and 3.')
+
+
 display_board(playground)
+ 
 
-player = input('Enter a player( X or O) ')
-user_row = input('Enter row: ')
-user_column= input('Enter column ')
+# player = input('Enter a player( X or O) ')
+# user_row = input('Enter row: ')
+# user_column= input('Enter column ')
 
+# user_input(player, user_row, user_column)
 
-def player_input(player, user_row, user_column):
+# display_board(playground)
+# playground[1][5] = 'X'
+# print(playground[1][5])
 
-
-    # if user_row or user_column not in [1, 2, 3]:
-    #     print('You are numbers wrong')
-
-
-    
-    for row in playground:
-        for pixel in row:
-            if user_row == 1 and user_column == 1 and playground[1][3] == 0:
-                playground[1][3] == player
-            elif  user_row == 1 and user_column == 2 and playground[1][8] == 0:
-                playground[1][8] == player    
-            elif user_row == 1 and user_column == 3 and playground[1][13] == 0:
-                playground[1][13] == player
-            elif user_row == 2 and user_column == 1 and playground[3][3] == 0:
-                playground[3][3] == player
-            elif user_row == 2 and user_column == 2 and playground[3][8] == 0:
-                playground[3][8] == player
-            elif user_row == 2 and user_column == 3 and playground[3][13] == 0:
-                playground[1][3] == player
-            elif user_row == 3 and user_column == 1 and playground[5][3] == 0:
-                playground[5][3] == player
-            elif user_row == 3 and user_column == 2 and playground[5][8] == 0:
-                playground[5][8] == player
-            elif user_row == 3 and user_column == 3 and playground[5][13] == 0:
-                playground[5][13] == player
-    print(playground)
+# display_board(playground)
 
 
 
+def check_win(playground):
+    # check rows and columns
+    for i in range(1, 6, 2):  
+        if playground[i][4] == playground[i][8] == playground[i][12] != 0:
+            return playground[i][4]
+
+    for j in range(4, 13, 4): 
+        if playground[1][j] == playground[3][j] == playground[5][j] != 0:
+            return playground[1][j]
+
+    # check diaganols
+    if playground[1][4] == playground[3][8] == playground[5][12] != 0:
+        return playground[1][4]
+
+    if playground[1][12] == playground[3][8] == playground[5][4] != 0:
+        return playground[1][12]
+
+    return 0  
+
+list_of_possible_positions = [
+    playground[1][4], playground[1][8], playground[1][12],
+    playground[3][4], playground[3][8], playground[3][12],
+    playground[5][4], playground[5][8], playground[5][12]
+    ]
+
+def play():
+    playground = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 3, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+
+    display_board(playground)
+
+    player = input('Enter a player(X or O): ').upper()
+    while player not in ['X', 'O']:
+        player = input('Invalid input. Enter a player(X or O): ').upper()
+
+    while True:
+        user_row = input('Enter row (1-3): ')
+        user_column = input('Enter column (1-3): ')
+
+        if user_input(player, user_row, user_column, playground):
+            display_board(playground)
+            winner = check_win(playground)
+            if winner:
+                print(f'Player {winner} wins!')
+                break
+            elif all(position != 0 for position in list_of_possible_positions):
+                print('It\'s a tie!')
+                break
+
+            player = 'O' if player == 'X' else 'X'  # Switch player for next turn
+        else:
+            continue
 
 
-
-# player_input(player) – To get the position from the player.
-# check_win() – To check whether there is a winner or not.
-# play() – The main function, which calls all the functions created above.
+play()
