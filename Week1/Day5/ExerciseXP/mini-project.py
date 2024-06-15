@@ -52,18 +52,6 @@ def user_input(player, user_row, user_column):
 display_board(playground)
  
 
-# player = input('Enter a player( X or O) ')
-# user_row = input('Enter row: ')
-# user_column= input('Enter column ')
-
-# user_input(player, user_row, user_column)
-
-# display_board(playground)
-# playground[1][5] = 'X'
-# print(playground[1][5])
-
-# display_board(playground)
-
 
 
 def check_win(playground):
