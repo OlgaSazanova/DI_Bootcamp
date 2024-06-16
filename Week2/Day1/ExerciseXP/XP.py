@@ -138,7 +138,8 @@ class Zoo:
 
 # Create a method called add_animal that takes one parameter new_animal.
 # This method adds the new_animal to the animals list as long as it isn’t already in the list.
-    def add_animal(new_animal : str):
+    def add_animal(self):
+        new_animal = input('Which animal should we add to the zoo? ')
         if new_animal not in self.animals:
             self.animals.append(new_animal)
             print(f"{new_animal} added to the zoo!")
@@ -157,7 +158,8 @@ class Zoo:
 
 # Create a method called sell_animal that takes one parameter animal_sold.
 #  This method removes the animal from the list and of course the animal needs to exist in the list.
-    def sell_animal(self, animal_sold: str):
+    def sell_animal(self):
+        animal_sold = input('Which animal should we sell? ')
         if animal_sold in self.animals:
             self.animals.remove(animal_sold)
             print(f"{animal_sold} has been sold.")
@@ -173,30 +175,36 @@ class Zoo:
 #     3: ['Cat', 'Cougar'],
 #     4: ['Eel', 'Emu']
 # }
+
     def sort_animals(self):
         animal_groups = {}
-        for animal in self.animals:
-            first_letter = animal[0].upper()
-            if first_letter in animal_groups:
-                animal_groups[first_letter].append(animal)
+        sorted_animals = sorted(self.animals, key=str.upper)
+        group_number = 1
+
+        for animal in sorted_animals:
+            if group_number not in animal_groups:
+                animal_groups[group_number] = [animal]
             else:
-                animal_groups[first_letter] = [animal]
+                animal_groups[group_number].append(animal)
+            group_number += 1
+
         return animal_groups
 # Create a method called get_groups that prints the animal/animals inside each group.
-    def get_groups(self) -> None:
+    def get_groups(self):
         animal_groups = self.sort_animals()
         for key in sorted(animal_groups.keys()):
             print(f"{key}: {animal_groups[key]}")
-
 
 
 #Create an object called ramat_gan_safari and call all the methods
 def main():
     ramat_gan_safari = Zoo('Ramat Gan Safari')
 
-    
+    ramat_gan_safari.add_animal()
+    ramat_gan_safari.get_animals()
+    ramat_gan_safari.sell_animal()
+    ramat_gan_safari.get_animals()
+    ramat_gan_safari.get_groups()
 
-# Tip: The zookeeper is the one who will use this class.
-# Example
-# Which animal should we add to the zoo --> Giraffe
-# x.add_animal(Giraffe)
+if __name__ == "__main__": # Run the code below if you run the file directly
+    main()
