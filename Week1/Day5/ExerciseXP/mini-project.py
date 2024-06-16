@@ -73,11 +73,7 @@ def check_win(playground):
 
     return 0  
 
-list_of_possible_positions = [
-    playground[1][4], playground[1][8], playground[1][12],
-    playground[3][4], playground[3][8], playground[3][12],
-    playground[5][4], playground[5][8], playground[5][12]
-    ]
+
 
 def play():
     playground = [
@@ -91,6 +87,12 @@ def play():
     ]
 
     display_board(playground)
+    
+    list_of_possible_positions = [
+    playground[1][4], playground[1][8], playground[1][12],
+    playground[3][4], playground[3][8], playground[3][12],
+    playground[5][4], playground[5][8], playground[5][12]
+    ]
 
     player = input('Enter a player(X or O): ').upper()
     while player not in ['X', 'O']:
