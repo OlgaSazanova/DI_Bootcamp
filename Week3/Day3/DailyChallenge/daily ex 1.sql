@@ -44,7 +44,8 @@ INSERT INTO customer_profile (isloggedIn, customer_id)
 SELECT cus.first_name
 FROM customer as cus
 INNER JOIN customer_profile as c_p
-ON cus.customer_id = c_p.customer_id;
+ON cus.customer_id = c_p.customer_id
+WHERE c_p.isLoggedIn = true;
 
 -- All the customers first_name and isLoggedIn columns -
 -- even the customers those who don’t have a profile.
