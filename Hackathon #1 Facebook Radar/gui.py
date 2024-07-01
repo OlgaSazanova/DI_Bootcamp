@@ -75,22 +75,22 @@ class FacebookRadarApp:
         else:
             messagebox.showwarning("Input Error", "All fields are required.")
        
-    def open_link(self, url):
+    def open_link(self, id, url):
         if isinstance(url, str) and url.strip():
+            Report.increment_click_count(id)  # Increment click count - doesn't work
             webbrowser.open_new(url)
         else:
             messagebox.showerror("Error", "Invalid URL")
-
 
     def comment(self):
         self.clear_frame()
         reports = Report.get_reports()
 
         for report in reports:
-            id,  username, topic, link, clicks, report_date = report
+            id, username, topic, link, clicks, report_date = report
             report_text = f"{username} reported {topic}"
             tk.Label(self.root, text=report_text).pack()
-            link_button = tk.Button(self.root, text="Open Link", width=20, height=2, command=lambda url=link: self.open_link(url))
+            link_button = tk.Button(self.root, text="Open Link", width=20, height=2, command=lambda id=id, url=link: self.open_link(id, url))
             link_button.pack()
                     
         # for report in reports:

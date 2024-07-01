@@ -43,7 +43,7 @@ class Report:
         try:
             cursor.execute(
                 "UPDATE reports SET clicks = clicks + 1 WHERE id = %s",
-                (id,)
+                (id )
             )
             conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
