@@ -42,14 +42,8 @@
 
 # The requirements are as follows:
 
-# The Card class should have a suit (Hearts, Diamonds, Clubs, Spades) and a value (A,2,3,4,5,6,7,8,9,10,J,Q,K)
-# The Deck class :
-# should have a shuffle method which makes sure the deck of cards has all 52 cards and then rearranges them randomly.
-# should have a method called deal which deals a single card from the deck.
-#  After a card is dealt, it should be removed from the deck.
-
 import random
-
+# The Card class should have a suit (Hearts, Diamonds, Clubs, Spades) and a value (A,2,3,4,5,6,7,8,9,10,J,Q,K)
 class Card:
     def __init__(self, suit, value) -> None:
         self.suit = suit
@@ -61,15 +55,37 @@ class Card:
         return f'{self.value} of {self.suit}'
 
 
-
+# The Deck class :
+# should have a shuffle method which makes sure the deck of cards has all 52 cards and then rearranges them randomly.
+# should have a method called deal which deals a single card from the deck.
 class Deck:
     def __init__(self) -> None:
         suits = Card.suits
         values = Card.values
         self.cards = [Card(suit, value) for suit in suits for value in values]
 
-    def shuffle():
-        random.shuffle(self.cards)
+   
+    def shuffle(self):
+        if len(self.cards) != 52:
+            self.cards = [Card(suit, value) for suit in self.suits for value in self.values]
+            random.shuffle(self.cards)
 
-    def deal():
+    def deal(self):
+        if len(self.cards) == 0:
+            return "No cards left to deal"
+        return self.cards.pop()
 
+#  After a card is dealt, it should be removed from the deck.
+
+
+
+deck = Deck()
+print("Initial shuffled deck:")
+print(deck.cards)
+
+dealt_card = deck.deal()
+print("Dealt card:")
+print(dealt_card)
+
+print("Deck after dealing one card:")
+print(deck.cards)
