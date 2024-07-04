@@ -176,19 +176,38 @@ class Zoo:
 #     4: ['Eel', 'Emu']
 # }
 
+    # def sort_animals(self):
+    #     animal_groups = {}
+    #     sorted_animals = sorted(self.animals, key=str.upper)
+    #     group_number = 1
+
+    #     for animal in sorted_animals:
+    #         if group_number not in animal_groups:
+    #             animal_groups[group_number] = [animal]
+    #         else:
+    #             animal_groups[group_number].append(animal)
+    #         group_number += 1
+
+    #     return animal_groups
+    
+
     def sort_animals(self):
         animal_groups = {}
-        sorted_animals = sorted(self.animals, key=str.upper)
-        group_number = 1
-
+        sorted_animals = sorted(self.animals)
         for animal in sorted_animals:
-            if group_number not in animal_groups:
-                animal_groups[group_number] = [animal]
+            first_letter = animal[0].upper()
+            if first_letter not in animal_groups:
+                animal_groups[first_letter] = [animal]
             else:
-                animal_groups[group_number].append(animal)
+                animal_groups[first_letter].append(animal)
+        
+        grouped_animals = {}
+        group_number = 1
+        for key in sorted(animal_groups.keys()):
+            grouped_animals[group_number] = animal_groups[key] if len(animal_groups[key]) > 1 else animal_groups[key][0]
             group_number += 1
-
-        return animal_groups
+        
+        return grouped_animals
 # Create a method called get_groups that prints the animal/animals inside each group.
     def get_groups(self):
         animal_groups = self.sort_animals()
