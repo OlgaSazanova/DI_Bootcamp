@@ -1,27 +1,27 @@
 -- In the dvdrental database write a query to select all the columns from the “customer” table.
 
--- SELECT column_name
--- FROM information_schema.columns
--- WHERE table_name = 'customer';
+SELECT column_name
+FROM information_schema.columns
+ WHERE table_name = 'customer';
 
 -- Write a query to display the names (first_name, last_name) using an alias named “full_name”.
 
--- SELECT 
---     first_name || ' ' || last_name AS full_name
--- FROM customer;
+SELECT 
+    first_name || ' ' || last_name AS full_name
+FROM customer;
 
 -- -- Lets get all the dates that accounts were created. Write a query to select all the create_date
 -- from the “customer” table (there should be no duplicates).
 
--- SELECT DISTINCT create_date
--- FROM customer;
+SELECT DISTINCT create_date
+FROM customer;
 
 -- -- Write a query to get all the customer details from the customer table, 
 -- it should be displayed in descending order by their first name.
 
--- SELECT *
--- FROM customer
--- ORDER by first_name desc;
+ SELECT *
+ FROM customer
+ ORDER by first_name desc;
 
 -- -- Write a query to get the film ID, title, description, year of release and rental rate
 -- in ascending order according to their rental rate.
@@ -114,8 +114,8 @@ SELECT first_name,
        payment_date
 FROM customer
 INNER JOIN payment
-ON  customer_id
-ORDER by customer.customer_id = payment.customer_id;
+ON   customer.customer_id = payment.customer_id
+ORDER by customer.customer_id ;
 
 
 -- You need to check your inventory. Write a query to get all the movies which are not in inventory.
@@ -123,7 +123,7 @@ ORDER by customer.customer_id = payment.customer_id;
 SELECT title
 FROM film
 LEFT JOIN inventory
-ON movie.film_id = inventory.film_id
+ON film.film_id = inventory.film_id
 WHERE inventory.film_id IS NULL;
 
 -- Write a query to find which city is in which country.
@@ -138,13 +138,14 @@ ON city.country_id = country.country_id;
 -- Write a query to get the customer’s id, names (first and last),
 -- the amount and the date of payment ordered by the id of the staff member who sold them the dvd.
 
-SELECT customer_id,
+SELECT customer.customer_id,
        first_name,
        last_name,
        amount,
-       payment_date
+       payment_date,
+	   staff_id
 FROM customer
 INNER JOIN payment
 ON customer.customer_id = payment.customer_id
-ORDER by staf_id;
+ORDER by staff_id;
     

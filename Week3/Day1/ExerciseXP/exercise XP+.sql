@@ -69,6 +69,6 @@ from students
 where id = 1 or id = 3;
 
 -- Fetch the students whose birth_dates are equal to or come after 1/01/2000. (show all their info).
-select first_name, last_name
+select *
 from students
 where birth_date >= '2000-01-01' ;
