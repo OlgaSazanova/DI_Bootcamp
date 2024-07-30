@@ -5,7 +5,7 @@
 with SummerMedals as(
 select gc.person_id,count(*) as summer_medals
 from olympics.games_competitor gc
-join olympics.competitor_event ce on gc.person_id = ce.competitor_id  
+join olympics.competitor_event ce on gc.id = ce.competitor_id  
 join olympics.games g on gc.games_id = g.id
 where ce.medal_id<=3 and g.season='Summer'
 group by gc.person_id
@@ -15,7 +15,7 @@ group by gc.person_id
 WinterMedals as(
 select gc.person_id,count(*) as winter_medals
 from olympics.games_competitor gc
-join olympics.competitor_event ce on gc.person_id = ce.competitor_id  
+join olympics.competitor_event ce on gc.id = ce.competitor_id  
 join olympics.games g on gc.games_id = g.id
 where ce.medal_id<=3 and g.season='Winter'
 group by gc.person_id
@@ -32,22 +32,28 @@ where sm.summer_medals>0 and wm.winter_medals>0
 --and then use a subquery to identify the top 3 competitors with the highest total number of medals across all sports.
 	--Display the contents of this table.
 WITH two_sports AS (
-SELECT ce.competitor_id,
+SELECT gc.person_id,
+	
 	  count(DISTINCT e.sport_id)
 FROM olympics.competitor_event as ce
+JOIN olympics.games_competitor as gc
+	ON gc.id = ce.competitor_id
 JOIN olympics.event as e
 ON  ce.event_id = e.id
 WHERE ce.medal_id != 4
-GROUP by ce.competitor_id
+GROUP by gc.person_id
 HAVING count(DISTINCT e.sport_id) = 2)
 	
-SELECT two_sports.competitor_id,
+SELECT two_sports.person_id,
+
 	 count(medal_id)
 FROM two_sports
+JOIN olympics.games_competitor as gc
+	ON two_sports.person_id = gc.person_id
 JOIN olympics.competitor_event as ce
-	ON two_sports.competitor_id = ce.competitor_id
+	ON gc.id = ce.competitor_id
 WHERE ce.medal_id != 4
-GROUP by two_sports.competitor_id
+GROUP by two_sports.person_id
 ORDER by count(medal_id) DESC
 LIMIT 3;
 

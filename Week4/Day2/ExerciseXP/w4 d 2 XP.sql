@@ -26,28 +26,30 @@ GROUP BY cm.medal_name;
 --Use nested subqueries to filter and aggregate the data.
 
 
+
+
 SELECT nr.region_name,
-	COUNT(competitor_id)	
+	COUNT(comp_id)	
 FROM	
-(SELECT competitor_id
-FROM (SELECT  ce.competitor_id,
+(SELECT DISTINCT  comp_id
+FROM (SELECT  p.id as comp_id,
 		count(ce.event_id) as num_events
 FROM olympics.competitor_event as ce
-GROUP by ce.competitor_id)
-WHERE num_events >3) as a
 JOIN olympics.games_competitor as gc
-	ON a.competitor_id = gc.id
+ON ce.competitor_id = gc.id
 JOIN olympics.person as p
 	ON gc.person_id = p.id
+GROUP by p.id)
+WHERE num_events >3) as a
+
 JOIN olympics.person_region as pr
-	ON p.id = pr.person_id
+	ON comp_id = pr.person_id
 JOIN olympics.noc_region as nr
 	ON pr.region_id = nr.id
 GROUP BY nr.region_name
 ORDER BY count DESC
 LIMIT 5
 ;
-
 -- 3. Create a temporary table to store the total number of medals won by each competitor
 --and filter to show only those who have won more than 2 medals.
 --Use subqueries to aggregate the data.
@@ -55,17 +57,20 @@ LIMIT 5
 
 
 CREATE TEMPORARY TABLE TempTable (
-    competitor_id INT,
+    person_id INT,
     medal_count INT
 );
 
 
 INSERT INTO TempTable
-SELECT competitor_id,
+SELECT person_id,
        COUNT(medal_id) AS medal_count
-FROM olympics.competitor_event
+FROM olympics.games_competitor as gc
+JOIN olympics.competitor_event as ce
+	ON gc.id = ce.competitor_id
+	
 WHERE medal_id != 4
-GROUP BY competitor_id;
+GROUP BY person_id;
 
 
 SELECT *
@@ -76,15 +81,17 @@ WHERE medal_count > 2;
 -- from a temporary table created for analysis.
 
 CREATE TEMPORARY TABLE TempTable2 (
-    competitor_id INT,
+    person_id INT,
     medal_id INT
 );
 
 
 INSERT INTO TempTable2
-SELECT competitor_id,
+SELECT person_id,
        medal_id
-FROM olympics.competitor_event
+FROM olympics.games_competitor as gc
+JOIN olympics.competitor_event as ce
+	ON gc.id = ce.competitor_id
 ;
 
 DELETE FROM TempTable2
@@ -191,14 +198,16 @@ Limit 4;
 --Use subqueries to calculate and compare averages.
 
 WITH overall AS
-(SELECT (count(medal_id) / count(DISTINCT competitor_id)) as overall_avg
-FROM olympics.competitor_event
+(SELECT (count(ce.medal_id) / count(DISTINCT gc.person_id)) as overall_avg
+FROM olympics.competitor_event as ce
+JOIN olympics.games_competitor as gc
+	ON gc.id = ce.competitor_id
 WHERE medal_id !=4),
 
 regional_avg AS 
 ( SELECT pr.region_id,
 	   nr.region_name,
-	(count(ce.medal_id) / count(DISTINCT ce.competitor_id)) as region_avg
+	(count(ce.medal_id) / count(DISTINCT gc.person_id)) as region_avg
 FROM olympics.person_region as pr
 JOIN olympics.noc_region as nr
 ON nr.id = pr.region_id
